@@ -1,0 +1,22 @@
+{
+  "configurations": [
+    {
+      "name": "profile",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "dev",
+      "request": "launch",
+      "type": "dart",
+      "args": ["--flavor", "dev"]
+    },
+    {
+      "name": "prod",
+      "request": "launch",
+      "type": "dart",
+      "args": ["--flavor", "prod"]
+    }
+  ]
+}
