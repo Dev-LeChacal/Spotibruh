@@ -11,6 +11,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+            .dart_tool
+          key: ${{ runner.os }}-flutter-${{ hashFiles('pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-
+
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.x"
@@ -24,8 +33,6 @@ jobs:
       - run: flutter pub get
 
       - run: flutter build apk --release --flavor prod --split-per-abi
-        env:
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}
 
       - uses: softprops/action-gh-release@v1
         with:
