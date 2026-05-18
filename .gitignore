@@ -47,3 +47,4 @@ app.*.map.json
 packages/spotify-dart/
 .vscode/
 build.bat
+release.bat
