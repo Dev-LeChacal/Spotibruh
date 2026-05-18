@@ -39,4 +39,4 @@ jobs:
 
       - uses: softprops/action-gh-release@v1
         with:
-          files: build/app/outputs/flutter-apk/app-arm64-v8a-prod-release.apk
+          files: build/app/outputs/flutter-apk/app-prod-release.apk
