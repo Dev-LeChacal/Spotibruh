@@ -31,7 +31,9 @@ jobs:
           cache: true
 
       - name: Clone spotify-dart
-        run: git clone -b fix/playlist-tracks https://github.com/Dev-LeChacal/spotify-dart.git packages/spotify-dart
+        run: |
+          rm -rf packages/spotify-dart
+          git clone -b fix/playlist-tracks https://github.com/Dev-LeChacal/spotify-dart.git packages/spotify-dart
 
       - run: flutter pub get
 
