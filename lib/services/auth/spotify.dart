@@ -39,9 +39,9 @@ class SpotifyAuth {
   static Future<void> login() async {
     _codeVerifier = SpotifyApi.generateCodeVerifier();
 
-    final credentials = SpotifyApiCredentials.pkce(Env.getClientId(), codeVerifier: _codeVerifier!);
+    final credentials = SpotifyApiCredentials.pkce(Env.clientId, codeVerifier: _codeVerifier!);
 
-    final redirectUri = Uri.parse(Env.getRedirectUri());
+    final redirectUri = Uri.parse(Env.redirectUri);
 
     _grant = SpotifyApi.authorizationCodeGrant(
       credentials,

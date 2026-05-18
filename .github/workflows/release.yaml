@@ -28,15 +28,12 @@ jobs:
         with:
           flutter-version: "3.x"
 
-      - name: Create .env
-        run: echo "CLIENT_ID=${{ secrets.CLIENT_ID }}" > .env
-
       - name: Clone spotify-dart
         run: git clone -b fix/playlist-tracks https://github.com/Dev-LeChacal/spotify-dart.git packages/spotify-dart
 
       - run: flutter pub get
 
-      - run: flutter build apk --release --flavor prod --split-per-abi
+      - run: flutter build apk --release --flavor prod --split-per-abi --dart-define=CLIENT_ID=${{ secrets.CLIENT_ID }}
 
       - uses: softprops/action-gh-release@v1
         with:

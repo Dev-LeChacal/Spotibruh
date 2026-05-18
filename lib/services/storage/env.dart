@@ -1,13 +1,7 @@
-import "package:flutter_dotenv/flutter_dotenv.dart";
-
 class Env {
   Env._();
 
-  static String getClientId() {
-    return dotenv.env["CLIENT_ID"] ?? "";
-  }
+  static const clientId = String.fromEnvironment("CLIENT_ID");
 
-  static String getRedirectUri() {
-    return "spotibruh://callback";
-  }
+  static const redirectUri = "spotibruh://callback";
 }
