@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:spotibruh/app.dart";
 import "package:spotibruh/extensions.dart";
-import "package:spotibruh/services/prefs.dart";
+import "package:spotibruh/services/storage/prefs.dart";
 import "package:spotibruh/theme/app_theme.dart";
 import "package:spotibruh/widgets/pressable.dart";
 

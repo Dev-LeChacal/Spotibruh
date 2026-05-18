@@ -2,11 +2,9 @@ import "dart:math";
 
 import "package:flutter/material.dart";
 import "package:hugeicons_pro/hugeicons.dart";
-import "package:internet_connection_checker_plus/internet_connection_checker_plus.dart";
 import "package:skeletonizer/skeletonizer.dart";
 import "package:spotibruh/router.dart";
 import "package:spotibruh/routes.dart";
-import "package:spotibruh/services/prefs.dart";
 import "package:spotibruh/services/youtube.dart";
 import "package:spotibruh/theme/app_theme.dart";
 import "package:spotibruh/widgets/button.dart";
@@ -14,11 +12,6 @@ import "package:spotibruh/widgets/scaffold.dart";
 import "package:spotify/spotify.dart";
 
 abstract final class App {
-  static Future<bool> isOffline() async {
-    if (Prefs.offline.value) return true;
-    return !await InternetConnection().hasInternetAccess;
-  }
-
   static final messengerKey = GlobalKey<ScaffoldMessengerState>();
   static final navigatorKey = GlobalKey<NavigatorState>();
 

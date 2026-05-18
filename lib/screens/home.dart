@@ -7,7 +7,6 @@ import "package:spotibruh/services/spotify.dart";
 import "package:spotibruh/widgets/button.dart";
 import "package:spotibruh/widgets/field.dart";
 import "package:spotibruh/widgets/artist.dart";
-import "package:spotibruh/widgets/messenger.dart";
 import "package:spotibruh/widgets/modal.dart";
 import "package:spotibruh/widgets/player.dart";
 import "package:spotibruh/widgets/playlist.dart";
@@ -77,10 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _showCreatePlaylistModal() async {
-    if (await App.isOffline()) {
-      return Messenger.show("Impossible en mode hors ligne", type: MessageType.warning);
-    }
-
     final result = await Modal.show<(String, String)>("Nouvelle playlist", const _CreatePlaylistForm());
 
     if (result == null) return;

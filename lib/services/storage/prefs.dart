@@ -14,11 +14,14 @@ class Prefs {
   Prefs._();
 
   static final theme = Pref<int>("theme", 0);
-  static final offline = Pref("offline", false);
   static final isShuffling = Pref("is_shuffling", false);
   static final showOnlyErrors = Pref("show_only_errors", false);
 
   static Future<void> clear() async {
     await Database.preferences.clear();
+
+    await theme.set(theme.defaultValue);
+    await isShuffling.set(isShuffling.defaultValue);
+    await showOnlyErrors.set(showOnlyErrors.defaultValue);
   }
 }

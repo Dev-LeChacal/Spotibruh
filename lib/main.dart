@@ -6,7 +6,7 @@ import "package:spotibruh/app.dart";
 import "package:spotibruh/main_app.dart";
 import "package:spotibruh/services/audio/audio.dart";
 import "package:spotibruh/services/downloader.dart";
-import "package:spotibruh/services/prefs.dart";
+import "package:spotibruh/services/storage/prefs.dart";
 import "package:spotibruh/services/storage/database.dart";
 import "package:spotibruh/theme/app_theme.dart";
 

@@ -4,7 +4,7 @@ import "package:hugeicons_pro/hugeicons.dart";
 import "package:marquee/marquee.dart";
 import "package:skeletonizer/skeletonizer.dart";
 import "package:spotibruh/services/audio/audio.dart";
-import "package:spotibruh/services/prefs.dart";
+import "package:spotibruh/services/storage/prefs.dart";
 import "package:spotibruh/services/spotify.dart";
 import "package:spotibruh/app.dart";
 import "package:spotibruh/utils/color.dart";

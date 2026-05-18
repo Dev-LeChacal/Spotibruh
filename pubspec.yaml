@@ -45,7 +45,6 @@ dependencies:
   hive_flutter: ^1.1.0
   webview_flutter: ^4.13.1
   webview_cookie_manager_plus: ^2.0.17
-  internet_connection_checker_plus: ^3.0.0
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,6 @@
 import "dart:async";
 
 import "package:hive_flutter/hive_flutter.dart";
-import "package:spotibruh/app.dart";
 import "package:spotibruh/router.dart";
 import "package:spotibruh/routes.dart";
 import "package:spotibruh/services/auth/spotify.dart";
@@ -34,13 +33,23 @@ class SpotifyService {
     await Database.followedArtists.clear();
   }
 
+  static Future<User> profile() async {
+    return Utils.tryCatch(
+      () async {
+        return await SpotifyAuth.spotify.me.get();
+      },
+
+      onErrorMessage: "Une erreur s'est produite durant la récupération du profil",
+
+      fallback: User(),
+    );
+  }
+
   // #region Playlists
 
   static Future<Iterable<PlaylistSimple>> getPlaylists({bool fromCache = true}) async {
     return Utils.tryCatch(
       () async {
-        if (await App.isOffline()) fromCache = true;
-
         final result = _getFromCache<PlaylistSimple>(
           fromCache,
           _cachedPlaylists,
@@ -82,8 +91,6 @@ class SpotifyService {
   static Future<Iterable<Track>> getPlaylistTracks(PlaylistSimple playlist, {bool fromCache = true}) async {
     return Utils.tryCatch(
       () async {
-        if (await App.isOffline()) fromCache = true;
-
         final id = Utils.guard(playlist.id);
 
         if (fromCache) {
@@ -113,10 +120,6 @@ class SpotifyService {
   }
 
   static Future<void> addTrackToPlaylist(PlaylistSimple playlist, Track track) async {
-    if (await App.isOffline()) {
-      return Messenger.show("Impossible en mode hors ligne", type: MessageType.warning);
-    }
-
     final trackId = Utils.guard(track.id);
     final trackUri = Utils.guard(track.uri);
 
@@ -144,10 +147,6 @@ class SpotifyService {
   static Future<void> createPlaylist(String name, String description) async {
     return Utils.tryCatch(
       () async {
-        if (await App.isOffline()) {
-          return Messenger.show("Impossible en mode hors ligne", type: MessageType.warning);
-        }
-
         final playlist = await SpotifyAuth.spotify.me.playlists.create(
           name,
           public: false,
@@ -174,8 +173,6 @@ class SpotifyService {
   static Future<Artist> getArtistDetails(Artist simpleArtist, {bool fromCache = true}) async {
     return Utils.tryCatch(
       () async {
-        if (await App.isOffline()) fromCache = true;
-
         final id = Utils.guard(simpleArtist.id);
 
         if (fromCache) {
@@ -211,8 +208,6 @@ class SpotifyService {
   static Future<Iterable<Artist>> getFollowedArtists({bool fromCache = true}) async {
     return Utils.tryCatch(
       () async {
-        if (await App.isOffline()) fromCache = true;
-
         final result = _getFromCache<Artist>(
           fromCache,
           _cachedArtists,
@@ -240,8 +235,6 @@ class SpotifyService {
   static Future<Iterable<Track>> search(String query) async {
     return Utils.tryCatch(
       () async {
-        if (await App.isOffline()) return [];
-
         final futures = List.generate(5, (i) {
           return SpotifyAuth.spotify.search.get(query, types: [SearchType.track]).getPage(10, i * 10);
         });

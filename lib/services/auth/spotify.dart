@@ -1,6 +1,5 @@
 import "dart:convert";
 import "package:oauth2/oauth2.dart" as oauth2;
-import "package:spotibruh/app.dart";
 import "package:spotibruh/services/downloader.dart";
 import "package:spotibruh/services/storage/env.dart";
 import "package:spotify/spotify.dart";
@@ -25,8 +24,6 @@ class SpotifyAuth {
     if (stored == null) return false;
 
     final json = jsonDecode(stored);
-
-    if (await App.isOffline()) return true;
 
     spotify = await SpotifyApi.asyncFromCredentials(
       _loadCredentials(json),

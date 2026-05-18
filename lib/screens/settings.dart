@@ -3,7 +3,7 @@ import "package:hugeicons_pro/hugeicons.dart";
 import "package:spotibruh/app.dart";
 import "package:spotibruh/extensions.dart";
 import "package:spotibruh/services/auth/index.dart";
-import "package:spotibruh/services/prefs.dart";
+import "package:spotibruh/services/storage/prefs.dart";
 import "package:spotibruh/utils/color.dart";
 import "package:spotibruh/widgets/button.dart";
 import "package:spotibruh/widgets/icon.dart";
@@ -38,16 +38,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _buildTitle("Apparence"),
 
                   const ThemeWidget(),
-
-                  _buildTitle("Réseau"),
-
-                  _buildSwitch(
-                    HugeIconsSolid.airplaneMode,
-                    HugeIconsSolid.airplaneModeOff,
-
-                    "Mode hors ligne",
-                    Prefs.offline,
-                  ),
 
                   _buildTitle("Notifications"),
 
