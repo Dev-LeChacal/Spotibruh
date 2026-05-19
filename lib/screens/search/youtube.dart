@@ -74,12 +74,10 @@ class _YoutubeSearchScreenState extends State<YoutubeSearchScreen> {
   @override
   Widget build(BuildContext context) {
     return ScaffoldWidget(
-      actions: [
+      widgets: [
         App.backButton,
 
-        FieldAction(
-          widget: FieldWidget(controller: _searchController, onSubmitted: (_) => search()),
-        ),
+        FieldWidget(controller: _searchController, onSubmitted: (_) => search()),
       ],
 
       body: SafeArea(

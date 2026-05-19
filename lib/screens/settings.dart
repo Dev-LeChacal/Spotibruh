@@ -1,11 +1,11 @@
 import "package:flutter/material.dart";
 import "package:hugeicons_pro/hugeicons.dart";
-import "package:spotibruh/app.dart";
 import "package:spotibruh/extensions.dart";
 import "package:spotibruh/services/auth/index.dart";
 import "package:spotibruh/services/storage/prefs.dart";
 import "package:spotibruh/utils/color.dart";
 import "package:spotibruh/widgets/button.dart";
+import "package:spotibruh/widgets/container.dart";
 import "package:spotibruh/widgets/icon.dart";
 import "package:spotibruh/widgets/scaffold.dart";
 import "package:spotibruh/widgets/switch.dart";
@@ -88,10 +88,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildSwitch(IconData onIcon, IconData offIcon, String label, Pref pref) {
     bool value = pref.value;
 
-    return App.buildContainer(
+    return ContainerWidget(
       height: 48,
 
-      Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         spacing: 12,
 

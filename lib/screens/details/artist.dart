@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:spotibruh/utils/color.dart";
 import "package:spotibruh/utils/images.dart";
-import "package:spotibruh/widgets/cover.dart";
+import "package:spotibruh/widgets/image.dart";
 import "package:spotibruh/widgets/pressable.dart";
 import "package:spotibruh/widgets/scaffold.dart";
 import "package:spotify/spotify.dart";
@@ -78,7 +78,7 @@ class _ArtistScreenState extends State<ArtistScreen> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
 
-            child: CoverWidget(size: 340, memSize: 640, imageURL: _imageURL),
+            child: ImageWidget(size: 340, memSize: 640, imageURL: _imageURL),
           ),
         ),
       ),

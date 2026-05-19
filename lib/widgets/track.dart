@@ -7,7 +7,7 @@ import "package:spotibruh/routes.dart";
 import "package:spotibruh/utils/color.dart";
 import "package:spotibruh/utils/duration.dart";
 import "package:spotibruh/utils/images.dart";
-import "package:spotibruh/widgets/cover.dart";
+import "package:spotibruh/widgets/image.dart";
 import "package:spotibruh/widgets/pressable.dart";
 import "package:spotify/spotify.dart";
 
@@ -89,7 +89,7 @@ class _TrackWidgetState extends State<TrackWidget> {
               child: ClipRRect(
                 borderRadius: App.imageBorderRadius,
 
-                child: CoverWidget(
+                child: ImageWidget(
                   size: App.trackCoverSize,
                   memSize: App.trackCoverMemSize,
                   imageURL: _imageURL,

@@ -4,6 +4,7 @@ import "package:hugeicons_pro/hugeicons.dart";
 import "package:spotibruh/app.dart";
 import "package:spotibruh/routes.dart";
 import "package:spotibruh/services/spotify.dart";
+import "package:spotibruh/utils/images.dart";
 import "package:spotibruh/widgets/button.dart";
 import "package:spotibruh/widgets/field.dart";
 import "package:spotibruh/widgets/artist.dart";
@@ -11,6 +12,8 @@ import "package:spotibruh/widgets/modal.dart";
 import "package:spotibruh/widgets/player.dart";
 import "package:spotibruh/widgets/playlist.dart";
 import "package:spotibruh/widgets/scaffold.dart";
+import "package:spotibruh/widgets/top_padding.dart";
+import "package:spotibruh/widgets/user.dart";
 import "package:spotify/spotify.dart";
 
 class HomeScreen extends StatefulWidget {
@@ -22,6 +25,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
+
+  bool _isUserProfileLoading = true;
+  User _userProfile = User();
 
   bool _isPlaylistsLoading = true;
   List<PlaylistSimple> _playlists = [];
@@ -42,11 +48,28 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _loadFromCache() async {
-    await Future.wait([_fetchUserPlaylists(), _fetchFollowedArtists()]);
+    await Future.wait([_fetchUserProfile(), _fetchUserPlaylists(), _fetchFollowedArtists()]);
   }
 
   Future<void> _loadFromSpotify() async {
-    await Future.wait([_fetchUserPlaylists(fromCache: false), _fetchFollowedArtists(fromCache: false)]);
+    await Future.wait([
+      _fetchUserProfile(fromCache: false),
+      _fetchUserPlaylists(fromCache: false),
+      _fetchFollowedArtists(fromCache: false),
+    ]);
+  }
+
+  Future<void> _fetchUserProfile({bool fromCache = true}) async {
+    if (mounted) setState(() => _isUserProfileLoading = true);
+
+    final user = await SpotifyService.userProfile(fromCache: fromCache);
+
+    if (mounted) {
+      setState(() {
+        _userProfile = user;
+        _isUserProfileLoading = false;
+      });
+    }
   }
 
   Future<void> _fetchUserPlaylists({bool fromCache = true}) async {
@@ -92,99 +115,114 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return ScaffoldWidget(
-      actions: [
+      topWidget: _buildUserProfile(),
+
+      widgets: [
         App.settingsButton,
 
-        FieldAction(
-          widget: FieldWidget(
-            controller: _searchController,
-            hintText: "Rechercher un artiste, une chanson",
+        FieldWidget(
+          controller: _searchController,
+          hintText: "Rechercher un artiste, une chanson",
 
-            onSubmitted: (query) async {
-              if (query.isEmpty) return;
+          onSubmitted: (query) async {
+            if (query.isEmpty) return;
 
-              await context.push(Routes.search.spotify, extra: query);
-              _searchController.clear();
-            },
-          ),
+            await context.push(Routes.search.spotify, extra: query);
+            _searchController.clear();
+          },
         ),
 
-        ButtonAction(
-          widget: ButtonWidget(onPressed: _showCreatePlaylistModal, icon: HugeIconsSolid.playListAdd),
-        ),
+        ButtonWidget(onPressed: _showCreatePlaylistModal, icon: HugeIconsSolid.playListAdd),
       ],
 
-      body: Padding(
-        padding: const EdgeInsets.only(top: 60),
+      body: Builder(
+        builder: (context) {
+          return Padding(
+            padding: EdgeInsets.only(top: ScaffoldTopPadding.of(context)),
 
-        child: SizedBox(
-          height: double.infinity,
+            child: SizedBox(
+              height: double.infinity,
 
-          child: SafeArea(
-            child: Stack(
-              children: [
-                NotificationListener<ScrollNotification>(
-                  onNotification: (notification) => notification.depth > 0,
+              child: Stack(
+                children: [
+                  NotificationListener<ScrollNotification>(
+                    onNotification: (notification) => notification.depth > 0,
 
-                  child: RefreshIndicator(
-                    onRefresh: _loadFromSpotify,
+                    child: RefreshIndicator(
+                      onRefresh: _loadFromSpotify,
 
-                    child: SizedBox(
-                      width: double.infinity,
+                      child: SizedBox(
+                        width: double.infinity,
 
-                      child: SingleChildScrollView(
-                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: SingleChildScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
 
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          spacing: 8,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            spacing: 8,
 
-                          children: [
-                            _buildTitle("Playlists"),
-                            _buildPlaylists(),
-
-                            _buildTitle("Artistes suivis"),
-                            _buildArtists(),
-                          ],
+                            children: [_buildPlaylists(), _buildArtists()],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
 
-                const Positioned(left: 0, right: 0, bottom: 16, child: SafeArea(child: PlayerWidget())),
-              ],
+                  const Positioned(left: 0, right: 0, bottom: 16, child: SafeArea(child: PlayerWidget())),
+                ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
 
   Widget _buildTitle(String title) {
     return Container(
-      padding: const EdgeInsets.only(left: 16),
+      margin: const EdgeInsetsGeometry.symmetric(horizontal: 16),
       width: double.infinity,
 
-      child: Text(title, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+      child: Text(title, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
     );
   }
 
+  Widget _buildUserProfile() {
+    final imageURL = ImagesUtils.getWorst(_userProfile.images);
+    return UserWidget(isLoading: _isUserProfileLoading, imageURL: imageURL, user: _userProfile);
+  }
+
   Widget _buildPlaylists() {
-    return App.buildHorizontalList(
-      _isPlaylistsLoading,
-      _playlists.map((p) => PlaylistWidget(playlist: p, key: ValueKey(p.id ?? ""))).toList(),
-      (index) => PlaylistWidget(playlist: App.mockPlaylist(index)),
-      padding: const EdgeInsets.only(left: 16),
+    return Column(
+      spacing: 8,
+
+      children: [
+        _buildTitle("Playlists"),
+
+        App.buildHorizontalList(
+          _isPlaylistsLoading,
+          _playlists.map((p) => PlaylistWidget(playlist: p, key: ValueKey(p.id ?? ""))).toList(),
+          (index) => PlaylistWidget(playlist: App.mockPlaylist(index)),
+          padding: const EdgeInsets.only(left: 16),
+        ),
+      ],
     );
   }
 
   Widget _buildArtists() {
-    return App.buildHorizontalList(
-      _isArtistsLoading,
-      _artists.map((a) => ArtistWidget(artist: a, key: ValueKey(a.id ?? ""))).toList(),
-      (index) => ArtistWidget(artist: App.mockArtist(index)),
-      padding: const EdgeInsets.only(left: 16),
+    return Column(
+      spacing: 8,
+
+      children: [
+        _buildTitle("Artistes suivis"),
+
+        App.buildHorizontalList(
+          _isArtistsLoading,
+          _artists.map((a) => ArtistWidget(artist: a, key: ValueKey(a.id ?? ""))).toList(),
+          (index) => ArtistWidget(artist: App.mockArtist(index)),
+          padding: const EdgeInsets.only(left: 16),
+        ),
+      ],
     );
   }
 }

@@ -10,7 +10,7 @@ import "package:spotibruh/app.dart";
 import "package:spotibruh/utils/color.dart";
 import "package:spotibruh/utils/images.dart";
 import "package:spotibruh/widgets/button.dart";
-import "package:spotibruh/widgets/cover.dart";
+import "package:spotibruh/widgets/image.dart";
 import "package:spotibruh/widgets/field.dart";
 import "package:spotibruh/widgets/pressable.dart";
 import "package:spotibruh/widgets/scaffold.dart";
@@ -335,7 +335,7 @@ class PlaylistImage extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
 
-                    child: CoverWidget(size: 220, memSize: 512, imageURL: imageURL),
+                    child: ImageWidget(size: 220, memSize: 512, imageURL: imageURL),
                   ),
                 ),
               ),

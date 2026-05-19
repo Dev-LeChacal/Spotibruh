@@ -12,6 +12,12 @@ class SpotifyLoginScreen extends StatefulWidget {
 class _SpotifyLoginScreenState extends State<SpotifyLoginScreen> {
   bool _isLoading = false;
 
+  @override
+  void initState() {
+    super.initState();
+    _login();
+  }
+
   void _login() async {
     setState(() {
       _isLoading = true;

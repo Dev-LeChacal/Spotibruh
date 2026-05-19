@@ -5,6 +5,7 @@ class Database {
 
   static const data = "data";
 
+  static late Box user;
   static late Box colors;
   static late Box playlists;
   static late Box tracks;
@@ -15,6 +16,7 @@ class Database {
   static Future<void> init() async {
     await Hive.initFlutter();
 
+    user = await Hive.openBox("user");
     colors = await Hive.openBox("colors");
     playlists = await Hive.openBox("playlists");
     tracks = await Hive.openBox("tracks");

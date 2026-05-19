@@ -6,7 +6,7 @@ import "package:spotibruh/services/audio/audio.dart";
 import "package:spotibruh/app.dart";
 import "package:spotibruh/utils/color.dart";
 import "package:spotibruh/utils/images.dart";
-import "package:spotibruh/widgets/cover.dart";
+import "package:spotibruh/widgets/image.dart";
 import "package:spotibruh/widgets/loading.dart";
 import "package:spotibruh/widgets/pressable.dart";
 import "package:spotibruh/widgets/scaffold.dart";
@@ -123,7 +123,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                 child: ClipRRect(
                   borderRadius: App.imageBorderRadius,
 
-                  child: CoverWidget(size: size, memSize: 640, imageURL: imageURL),
+                  child: ImageWidget(size: size, memSize: 640, imageURL: imageURL),
                 ),
               ),
             ),

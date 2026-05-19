@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:skeletonizer/skeletonizer.dart";
 import "package:spotibruh/app.dart";
-import "package:spotibruh/widgets/cover.dart";
+import "package:spotibruh/widgets/image.dart";
 import "package:spotibruh/widgets/pressable.dart";
 
 class CardWidget extends StatelessWidget {
@@ -48,7 +48,7 @@ class CardWidget extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: App.borderRadius,
 
-                    child: CoverWidget(size: 120, memSize: 320, imageURL: imageURL),
+                    child: ImageWidget(size: 120, memSize: 320, imageURL: imageURL),
                   ),
                 ),
               ),

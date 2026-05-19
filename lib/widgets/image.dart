@@ -3,8 +3,9 @@ import "package:flutter/material.dart";
 import "package:hugeicons_pro/hugeicons.dart";
 import "package:spotibruh/app.dart";
 import "package:spotibruh/extensions.dart";
+import "package:spotibruh/widgets/container.dart";
 
-class CoverWidget extends StatelessWidget {
+class ImageWidget extends StatelessWidget {
   final String? imageURL;
 
   final int? memSize;
@@ -15,7 +16,7 @@ class CoverWidget extends StatelessWidget {
   final double? width;
   final double? height;
 
-  const CoverWidget({
+  const ImageWidget({
     super.key,
     required this.imageURL,
 
@@ -75,8 +76,6 @@ class CoverLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(borderRadius: App.borderRadius, color: context.c.surface),
-    );
+    return const ContainerWidget();
   }
 }

@@ -7,7 +7,7 @@ import "package:spotibruh/services/audio/audio.dart";
 import "package:spotibruh/app.dart";
 import "package:spotibruh/utils/color.dart";
 import "package:spotibruh/utils/images.dart";
-import "package:spotibruh/widgets/cover.dart";
+import "package:spotibruh/widgets/image.dart";
 import "package:spotibruh/widgets/loading.dart";
 import "package:spotibruh/widgets/pressable.dart";
 import "package:spotify/spotify.dart" hide Offset;
@@ -95,7 +95,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
         child: ClipRRect(
           borderRadius: App.imageBorderRadius,
 
-          child: CoverWidget(size: App.trackCoverSize, memSize: App.trackCoverMemSize, imageURL: imageURL),
+          child: ImageWidget(size: App.trackCoverSize, memSize: App.trackCoverMemSize, imageURL: imageURL),
         ),
       ),
     );

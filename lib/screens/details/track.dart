@@ -12,7 +12,7 @@ import "package:spotibruh/utils/path.dart";
 import "package:spotibruh/utils/utils.dart";
 import "package:spotibruh/widgets/artist.dart";
 import "package:spotibruh/widgets/button.dart";
-import "package:spotibruh/widgets/cover.dart";
+import "package:spotibruh/widgets/image.dart";
 import "package:spotibruh/widgets/pressable.dart";
 import "package:spotibruh/widgets/scaffold.dart";
 import "package:spotify/spotify.dart";
@@ -121,7 +121,7 @@ class _TrackScreenState extends State<TrackScreen> {
           child: ClipRRect(
             borderRadius: App.imageBorderRadius,
 
-            child: CoverWidget(size: 340, memSize: 640, imageURL: _imageURL),
+            child: ImageWidget(size: 340, memSize: 640, imageURL: _imageURL),
           ),
         ),
       ),

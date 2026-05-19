@@ -5,7 +5,7 @@ import "package:spotibruh/extensions.dart";
 import "package:spotibruh/services/youtube.dart";
 import "package:spotibruh/utils/color.dart";
 import "package:spotibruh/utils/duration.dart";
-import "package:spotibruh/widgets/cover.dart";
+import "package:spotibruh/widgets/image.dart";
 import "package:spotibruh/widgets/pressable.dart";
 
 class VideoWidget extends StatefulWidget {
@@ -80,7 +80,7 @@ class _VideoWidgetState extends State<VideoWidget> {
           child: ClipRRect(
             borderRadius: App.imageBorderRadius,
 
-            child: CoverWidget(
+            child: ImageWidget(
               imageURL: _imageURL,
 
               memWidth: App.videoCoverMemWidth,

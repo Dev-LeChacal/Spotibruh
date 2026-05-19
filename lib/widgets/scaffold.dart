@@ -1,44 +1,61 @@
 import "package:flutter/material.dart";
 import "package:spotibruh/app.dart";
-import "package:spotibruh/widgets/button.dart";
 import "package:spotibruh/widgets/field.dart";
+import "package:spotibruh/widgets/top_padding.dart";
 
-sealed class ScaffoldAction {}
-
-class ButtonAction extends ScaffoldAction {
-  final ButtonWidget widget;
-
-  ButtonAction({required this.widget});
-}
-
-class FieldAction extends ScaffoldAction {
-  final FieldWidget widget;
-
-  FieldAction({required this.widget});
-}
-
-class ScaffoldWidget extends StatelessWidget {
-  const ScaffoldWidget({super.key, required this.body, this.actions = const []});
-
+class ScaffoldWidget extends StatefulWidget {
   final Widget body;
-  final List<ScaffoldAction> actions;
+  final List<Widget> widgets;
+  final Widget? topWidget;
+
+  const ScaffoldWidget({super.key, required this.body, this.widgets = const [], this.topWidget});
+
+  @override
+  State<ScaffoldWidget> createState() => _ScaffoldWidgetState();
+}
+
+class _ScaffoldWidgetState extends State<ScaffoldWidget> {
+  final topbarKey = GlobalKey();
+  double _topPadding = 60;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => _measure());
+  }
+
+  @override
+  void didUpdateWidget(covariant ScaffoldWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => _measure());
+  }
+
+  void _measure() {
+    final box = topbarKey.currentContext?.findRenderObject() as RenderBox?;
+
+    if (box == null) return;
+
+    setState(() => _topPadding = box.size.height + 16);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final mappedActions = actions.map((e) {
+    final mappedWidgets = widget.widgets.map((e) {
       return switch (e) {
-        FieldAction action => Expanded(child: action.widget),
-        ButtonAction action => action.widget,
+        FieldWidget widget => Expanded(child: widget),
+        Widget widget => widget,
       };
     }).toList();
 
-    final children = actions.isEmpty ? [App.backButton.widget] : mappedActions;
-    final hasField = actions.any((e) => e is FieldAction);
+    final children = widget.widgets.isEmpty ? [App.backButton] : mappedWidgets;
+    final hasExpanded = widget.widgets.any((e) => e is FieldWidget);
 
     return Scaffold(
       body: Stack(
         children: [
-          body,
+          ScaffoldTopPadding(padding: _topPadding, child: widget.body),
 
           Positioned(
             top: 8,
@@ -46,11 +63,22 @@ class ScaffoldWidget extends StatelessWidget {
             right: 12,
 
             child: SafeArea(
-              child: Row(
-                mainAxisSize: hasField ? MainAxisSize.max : MainAxisSize.min,
-                spacing: 5,
+              key: topbarKey,
 
-                children: children,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 6,
+
+                children: [
+                  ?widget.topWidget,
+
+                  Row(
+                    mainAxisSize: hasExpanded ? MainAxisSize.max : MainAxisSize.min,
+                    spacing: 5,
+
+                    children: children,
+                  ),
+                ],
               ),
             ),
           ),

@@ -73,12 +73,10 @@ class _SpotifySearchScreenState extends State<SpotifySearchScreen> {
   @override
   Widget build(BuildContext context) {
     return ScaffoldWidget(
-      actions: [
+      widgets: [
         App.backButton,
 
-        FieldAction(
-          widget: FieldWidget(controller: _searchController, onSubmitted: (_) => search()),
-        ),
+        FieldWidget(controller: _searchController, onSubmitted: (_) => search()),
       ],
 
       body: SafeArea(

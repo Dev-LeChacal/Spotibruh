@@ -8,7 +8,6 @@ import "package:spotibruh/routes.dart";
 import "package:spotibruh/services/youtube.dart";
 import "package:spotibruh/theme/app_theme.dart";
 import "package:spotibruh/widgets/button.dart";
-import "package:spotibruh/widgets/scaffold.dart";
 import "package:spotify/spotify.dart";
 
 abstract final class App {
@@ -20,6 +19,7 @@ abstract final class App {
 
   static const borderRadius = BorderRadius.all(Radius.circular(20));
   static const imageBorderRadius = BorderRadius.all(Radius.circular(16));
+  static const avatarBorderRadius = BorderRadius.all(Radius.circular(999));
 
   static const double trackCoverSize = 58;
   static const int trackCoverMemSize = 180;
@@ -75,18 +75,6 @@ abstract final class App {
     return "${track.name} ${track.artists?.map((a) => a.name).join(", ")}";
   }
 
-  static Widget buildContainer(Widget child, {double? width, double? height}) {
-    return Container(
-      decoration: BoxDecoration(borderRadius: App.borderRadius, color: App.theme.value.surfaceContainer),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-
-      width: width,
-      height: height,
-
-      child: child,
-    );
-  }
-
   static Widget buildHorizontalList(
     bool isLoading,
     List<Widget> items,
@@ -122,12 +110,11 @@ abstract final class App {
     );
   }
 
-  static final backButton = ButtonAction(
-    widget: ButtonWidget(onPressed: router.pop, icon: HugeIconsSolid.arrowLeft01),
-  );
+  static final backButton = ButtonWidget(onPressed: router.pop, icon: HugeIconsSolid.arrowLeft01);
 
-  static final settingsButton = ButtonAction(
-    widget: ButtonWidget(onPressed: () => router.push(Routes.settings), icon: HugeIconsSolid.settings01),
+  static final settingsButton = ButtonWidget(
+    onPressed: () => router.push(Routes.settings),
+    icon: HugeIconsSolid.settings01,
   );
 
   static const agent =

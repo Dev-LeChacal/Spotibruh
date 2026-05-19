@@ -18,6 +18,7 @@ class SpotifyService {
   static final Map<String, Artist> _cachedArtistDetails = {};
   static Iterable<Artist> _cachedArtists = [];
 
+  static User? _cachedUserProfile;
   static String? _userId;
 
   static Future<void> clear() async {
@@ -28,15 +29,33 @@ class SpotifyService {
 
     _userId = null;
 
+    await Database.user.clear();
     await Database.playlists.clear();
     await Database.tracks.clear();
     await Database.followedArtists.clear();
   }
 
-  static Future<User> profile() async {
+  static Future<User> userProfile({bool fromCache = true}) async {
     return Utils.tryCatch(
       () async {
-        return await SpotifyAuth.spotify.me.get();
+        if (fromCache) {
+          if (_cachedUserProfile != null) {
+            return _cachedUserProfile!;
+          }
+
+          final stored = Database.user.get(Database.data);
+
+          if (stored != null) {
+            return _cachedUserProfile = User.fromJson(_deepConvert(stored) as Map<String, dynamic>);
+          }
+        }
+
+        final user = await SpotifyAuth.spotify.me.get();
+
+        _cachedUserProfile = user;
+        unawaited(Database.user.put(Database.data, user.toJson()));
+
+        return user;
       },
 
       onErrorMessage: "Une erreur s'est produite durant la récupération du profil",
@@ -60,7 +79,7 @@ class SpotifyService {
 
         if (result != null) return result;
 
-        _userId ??= (await SpotifyAuth.spotify.me.get()).id;
+        _userId ??= (await userProfile()).id;
 
         _cachedPlaylists = await SpotifyAuth.spotify.me.playlists.saved().all();
 
